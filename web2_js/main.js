@@ -11,10 +11,17 @@ var app = http.createServer(function(request,response){
 
   if(pathname === '/'){ //홈 과 페이지를 구분 할 수 없다.
     if(queryData.id===undefined){
-      fs.readFile(`DATA/${queryData.id}`, 'utf8',
-      function(err, description){
+      fs.readdir('./data', function(error, filelist){
+        console.log(filelist);
         var title = 'WELCOME';
         var description = '감다영 똥꼬 부농똥꼬';
+        var list='<ul>';
+        var i = 0;
+        while (i < filelist.length){
+          list = list + `<li><a href="/?id=${filelist[i]}">${filelist[i]}</a></li>`;
+          i+=1;
+        }
+        list = list+'</ul>';
         var template = `
         <!doctype html>
         <html>
@@ -24,47 +31,64 @@ var app = http.createServer(function(request,response){
         </head>
         <body>
         <h1><a href="/">WEB</a></h1>
-        <ul>
-        <li><a href="/?id=HTML">HTML</a></li>
-        <li><a href="/?id=CSS">CSS</a></li>
-        <li><a href="/?id=JavaScript">JavaScript</a></li>
-        </ul>
-        <h2>${title}</h2>
-        <p>${description}</p>
-        </body>
-        </html>
-        `;
-        response.writeHead(200);
-        response.end(template);
-      });
-    }
-    else {
-      fs.readFile(`DATA/${queryData.id}`, 'utf8',
-      function(err, description){
-        var title = queryData.id;
-        var template = `
-        <!doctype html>
-        <html>
-        <head>
-        <title>WEB1 - ${title}</title>
-        <meta charset="utf-8">
-        </head>
-        <body>
-        <h1><a href="/">WEB</a></h1>
-        <ul>
-        <li><a href="/?id=HTML">HTML</a></li>
-        <li><a href="/?id=CSS">CSS</a></li>
-        <li><a href="/?id=JavaScript">JavaScript</a></li>
-        </ul>
-        <h2>${title}</h2>
-        <p>${description}</p>
-        </body>
-        </html>
-        `;
-        response.writeHead(200);
-        response.end(template);
+        ${list}
 
+        <h2>${title}</h2>
+        <p>${description}</p>
+        </body>
+        </html>
+        `;
+        response.writeHead(200);
+        response.end(template);
+      });
+    }
+
+    else {
+      fs.readdir('./data', function(error, filelist){
+        console.log(filelist);
+        var title = 'WELCOME';
+        var description = '감다영 똥꼬 부농똥꼬';
+        var list='<ul>';
+        var i = 0;
+        while (i < filelist.length){
+          list = list + `<li><a href="/?id=${filelist[i]}">${filelist[i]}</a></li>`;
+          i+=1;
+        }
+        list = list+'</ul>';
+        fs.readFile(`DATA/${queryData.id}`, 'utf8',
+        function(err, description){
+          var title = queryData.id;
+          var template = `
+          <!doctype html>
+          <html>
+          <head>
+          <title>WEB1 - ${title}</title>
+          <meta charset="utf-8">
+          </head>
+          <body>
+          <h1><a href="/">WEB</a></h1>
+          ${list}
+          <h2>${title}</h2>
+          <p>${description}</p>
+          </body>
+          </html>
+          `;
+          response.writeHead(200);
+          response.end(template);
+        });
+      });
+    }
+    fs.readdir('./data', function(error, filelist){
+      console.log(filelist);
+      var title = 'WELCOME';
+      var description = '감다영 똥꼬 부농똥꼬';
+      var list='<ul>';
+      var i = 0;
+      while (i < filelist.length){
+        list = list + `<li><a href="/?id=${filelist[i]}">${filelist[i]}</a></li>`;
+        i+=1;
       }
+      list = list+'</ul>';
       fs.readFile(`DATA/${queryData.id}`, 'utf8',
       function(err, description){
         var title = queryData.id;
@@ -77,11 +101,7 @@ var app = http.createServer(function(request,response){
         </head>
         <body>
         <h1><a href="/">WEB</a></h1>
-        <ul>
-        <li><a href="/?id=HTML">HTML</a></li>
-        <li><a href="/?id=CSS">CSS</a></li>
-        <li><a href="/?id=JavaScript">JavaScript</a></li>
-        </ul>
+        ${list}
         <h2>${title}</h2>
         <p>${description}</p>
         </body>
@@ -90,10 +110,11 @@ var app = http.createServer(function(request,response){
         response.writeHead(200);
         response.end(template);
       });
-    }
-    else{
-      response.writeHead(404);
-      response.end("Not found");
-    }
-  });
-  app.listen(3000);
+    });
+  }
+  else{
+    response.writeHead(404);
+    response.end("Not found");
+  }
+});
+app.listen(3000);
