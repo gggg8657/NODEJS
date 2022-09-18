@@ -18,7 +18,16 @@ function templateHTML(title, list, body){
   </html>
   `;
 }
-
+function templateLIST(filelist){
+  var list='<ul>';
+  var i = 0;
+  while (i < filelist.length){
+    list = list + `<li><a href="/?id=${filelist[i]}">${filelist[i]}</a></li>`;
+    i+=1;
+  }
+  list = list+'</ul>';
+  return list;
+}
 
 var app = http.createServer(function(request,response){
   var _url = request.url;
@@ -33,13 +42,7 @@ var app = http.createServer(function(request,response){
         console.log(filelist);
         var title = 'WELCOME';
         var description = '감다영 똥꼬 부농똥꼬';
-        var list='<ul>';
-        var i = 0;
-        while (i < filelist.length){
-          list = list + `<li><a href="/?id=${filelist[i]}">${filelist[i]}</a></li>`;
-          i+=1;
-        }
-        list = list+'</ul>';
+        var list=templateLIST(filelist);
         var template = templateHTML(title, list, `<h2>${title}</h2><p>${description}</p>`);
         response.writeHead(200);
         response.end(template);
@@ -49,43 +52,16 @@ var app = http.createServer(function(request,response){
     else {
       fs.readdir('./data', function(error, filelist){
         console.log(filelist);
-        var title = 'WELCOME';
-        var description = '감다영 똥꼬 부농똥꼬';
-        var list='<ul>';
-        var i = 0;
-        while (i < filelist.length){
-          list = list + `<li><a href="/?id=${filelist[i]}">${filelist[i]}</a></li>`;
-          i+=1;
-        }
-        list = list+'</ul>';
         fs.readFile(`DATA/${queryData.id}`, 'utf8',
         function(err, description){
           var title = queryData.id;
+          var list=templateLIST(filelist);
           var template = templateHTML(title, list, `<h2>${title}</h2><p>${description}</p>`);
           response.writeHead(200);
           response.end(template);
         });
       });
     }
-    fs.readdir('./data', function(error, filelist){
-      console.log(filelist);
-      var title = 'WELCOME';
-      var description = '감다영 똥꼬 부농똥꼬';
-      var list='<ul>';
-      var i = 0;
-      while (i < filelist.length){
-        list = list + `<li><a href="/?id=${filelist[i]}">${filelist[i]}</a></li>`;
-        i+=1;
-      }
-      list = list+'</ul>';
-      fs.readFile(`DATA/${queryData.id}`, 'utf8',
-      function(err, description){
-        var title = queryData.id;
-        var template = templateHTML(title, list, `<h2>${title}</h2><p>${description}</p>`);
-        response.writeHead(200);
-        response.end(template);
-      });
-    });
   }
   else{
     response.writeHead(404);
