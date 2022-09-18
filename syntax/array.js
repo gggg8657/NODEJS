@@ -23,3 +23,8 @@ while(i<4){
 
 //check how long the array is
 console.log(arr.length);
+
+//array update ex) append.
+arr.push('e');
+
+console.log(arr);
