@@ -41,7 +41,7 @@ var app = http.createServer(function(request,response){
       fs.readdir('./data', function(error, filelist){
         console.log(filelist);
         var title = 'WELCOME';
-        var description = '감다영 똥꼬 부농똥꼬';
+        var description = 'Hello, Node.js';
         var list=templateLIST(filelist);
         var template = templateHTML(title, list, `<h2>${title}</h2><p>${description}</p>`);
         response.writeHead(200);
