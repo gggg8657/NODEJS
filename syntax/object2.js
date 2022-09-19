@@ -30,3 +30,7 @@ var o = {
 }
 console.log(o.func);
 o.func();
+
+
+//function 은 object 에 많이 담는다.
+//function 을 object 에 담았을때 이점을 확인.
