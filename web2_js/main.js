@@ -94,6 +94,8 @@ var app = http.createServer(function(request,response){
     // post 방식으로 전송된 데이터를 node js 로 가져오는 방법은 뭘까? -> 이해 하지 말고 그냥 익숙하게 가자.
     else if(pathname ==='/create_process')
     {
+
+      // post 방식으로 전송된 데이터를 받는 코드 ↓↓↓↓↓
       var body = '';
       //node js 에서는 post 방식을 전송된 데이터가 많을 경우에 어떤 특정한 양만큼을 수신할 때마다, 서버는 callback 함수를 호출하도록 약속되어있다.
       //수신한 정보를 주는것.
@@ -126,7 +128,7 @@ var app = http.createServer(function(request,response){
           var template = templateHTML(title, list,
             //`<h2>${title}</h2>${description}`,
             `
-            <form action="/update_proces" method="post">
+            <form action="/update_process" method="post">
             <input type="hidden" name="id" value="${title}">
             <p><input type="text" name="title" placeholder="title" value="${title}"></p>
             <p>
@@ -144,9 +146,31 @@ var app = http.createServer(function(request,response){
           response.end(template);
         });
       });
-    }
-
-    else {
+    } else if (pathname==='/update_process') {
+      // post 방식으로 전송된 데이터를 받는 코드 ↓↓↓↓↓
+      var body = '';
+      //node js 에서는 post 방식을 전송된 데이터가 많을 경우에 어떤 특정한 양만큼을 수신할 때마다, 서버는 callback 함수를 호출하도록 약속되어있다.
+      //수신한 정보를 주는것.
+      request.on('data', function(data){
+        body = body + data;
+        //이 콜백 함수가 실행 될 때마다 데이터를 body 에 추가하는 기능
+      });
+      request.on('end', function(){
+        //end 에 해당되는 콜백인 fucntio() 이 실행되면?
+        var post = qs.parse(body);
+        //post 에 정보 넣기.
+        console.log(post);
+        var id = post.id;
+        var title = post.title;
+        var description = post.description;
+        fs.rename(`DATA/${id}`, `DATA/${title}`, function(error){
+          fs.writeFile(`DATA/${title}`, description, 'utf8', function(err){
+            response.writeHead(302, {Location:`/?id=${title}`});//302 is redirection the site
+            response.end();
+          })
+        });
+      });
+    } else {
       response.writeHead(404);
       response.end("Not found");
     }
