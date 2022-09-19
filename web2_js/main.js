@@ -2,7 +2,8 @@ var http = require('http');
 var fs = require('fs');
 var url = require('url');
 var qs = require('querystring');
-
+var template = require('./lib/template.js');
+/*
 var template = {
   HTML: function (title, list, body, control){
     return `
@@ -32,6 +33,8 @@ var template = {
     return list;
   }
 }
+*/
+
 /*
 function templateHTML(title, list, body, control){
   return `
