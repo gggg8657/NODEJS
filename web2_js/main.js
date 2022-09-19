@@ -31,8 +31,6 @@ var template = {
     list = list+'</ul>';
     return list;
   }
-
-
 }
 /*
 function templateHTML(title, list, body, control){
